@@ -50,8 +50,13 @@ begin
       aHttp.AddHeader('Authorization', 'Basic ' + Auth);
       aHttp.AddHeader('Content-Type', 'application/json');
       aHttp.AddHeader('Idempotence-Key', IntToHex(Random(MaxInt), 8) + IntToStr(Random(MaxInt))); // Unique key
-
-      RespStr := aHttp.Post('https://api.yookassa.ru/v3/payments', TStringStream.Create(aJsonReq.AsJSON));
+      aHTTP.RequestBody:=TStringStream.Create(aJsonReq.AsJSON);
+      try
+        RespStr:=aHTTP.Post('https://api.yookassa.ru/v3/payments');
+      finally
+        aHTTP.RequestBody.Free;
+        aHTTP.RequestBody:=nil;
+      end;
 
       aJsonResp := TJSONObject(GetJSON(RespStr));
       try
