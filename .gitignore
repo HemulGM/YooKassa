@@ -36,3 +36,7 @@ lib/
 
 # Application bundle for Mac OS
 *.app/
+/__history/*
+/tests/__history/*
+*.dcu
+*.dproj.local
